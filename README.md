@@ -7,7 +7,7 @@ A decentralized supply chain management application built on Ethereum, enabling 
 ## 🛠️ Features
 - Company Registration: Register companies with detailed information such as name, type, location, and description.
 - Product/Service Addition: Registered companies can add products or services with unique identifiers and metadata.
-- Certificate Management: Issue and manage certificates to verify product authenticity and compliance.
+- Halal Certificate Management: Issue and manage halal certificates to verify product authenticity and compliance with Islamic dietary laws.
 - Blockchain-based Traceability: Immutable and transparent record of all registrations and transactions on the Ethereum blockchain.
 - Local Blockchain Simulation: Use Ganache for fast, local Ethereum network simulation during development and testing.
 - Smart Contract Deployment: Deploy contracts via Hardhat scripts or Remix IDE with MetaMask integration.
