@@ -18,18 +18,19 @@ A decentralized supply chain management application built on Ethereum, enabling 
    ```bash
    git clone https://github.com/HarrishPanicker1/Blockchain_Group_AI_Assignment.git
    cd Blockchain_Group_AI_Assignment
+   ```
 2. **Install dependencies**
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 3. **Start Ganache**
 4. **Compile contracts**
-```bash
-npx hardhat compile
-```
+   ```bash
+   npx hardhat compile
+   ```
 5. **Run frontend**
-```bash
-npx http-server frontend
-```
+   ```bash
+   npx http-server frontend
+   ```
 
 [![](https://visitcount.itsvg.in/api?id=imy1l&icon=0&color=0)](https://visitcount.itsvg.in)
