@@ -68,5 +68,28 @@
                 <button>Add Halal Certification</button>
             </a>
         </h2>
+               <div id="pdfListContainer">
+            <h3> Halal Certificate documents</h3>
+            <ul id="pdfList"></ul>
+        </div>
+
+        <script>
+          window.addEventListener("DOMContentLoaded", () => {
+            const list = document.getElementById("pdfList");
+            const halalCerts = JSON.parse(localStorage.getItem("halalCerts")) || [];
+
+            halalCerts.forEach((cert, i) => {
+              const li = document.createElement("li");
+              li.innerHTML = `
+                <strong>${cert.company}</strong> - ${cert.certID}<br>
+                <a href="${cert.blobURL}" target="_blank" download="Halal_Certificate_${cert.company}_${i + 1}.pdf">
+                  📄 Download Certificate
+                </a>
+                <hr/>
+              `;
+              list.appendChild(li);
+            });
+          });
+        </script>
     </body>
 </html>
