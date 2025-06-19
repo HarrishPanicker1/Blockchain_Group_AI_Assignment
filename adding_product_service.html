@@ -1,1 +1,173 @@
-<!--add details regarding product or service being added-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Product/Service</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      label {
+        font-weight: bold;
+        color: #333;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 15px;
+        font-size: 18px;
+        margin-top: 10px;
+      }
+
+      #status {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Add Product or Service to Supply Chain</h2>
+
+      <form id="productForm">
+        <label for="companyName">Company Name:</label>
+        <input type="text" id="companyName" name="companyName" required />
+
+        <label for="productType">Type:</label>
+        <select id="productType" name="productType" required>
+          <option value="">Select Type</option>
+          <option value="Raw Material">Raw Material</option>
+          <option value="Processed Food">Processed Food</option>
+          <option value="Packaging">Packaging</option>
+          <option value="Transportation">Transportation Service</option>
+          <option value="Storage">Storage Service</option>
+          <option value="Retail">Retail Product</option>
+        </select>
+
+        <label for="productName">Product/Service Name:</label>
+        <input type="text" id="productName" name="productName" required />
+
+        <label for="description">Description:</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="4"
+          required
+        ></textarea>
+
+        <label for="halalStatus">Halal Status:</label>
+        <select id="halalStatus" name="halalStatus" required>
+          <option value="">Select Status</option>
+          <option value="Certified">Halal Certified</option>
+          <option value="Pending">Certification Pending</option>
+          <option value="Not Applicable">Not Applicable</option>
+        </select>
+
+        <label for="supplierChain">Previous Supplier (if applicable):</label>
+        <input
+          type="text"
+          id="supplierChain"
+          name="supplierChain"
+          placeholder="Name of previous supplier in chain"
+        />
+
+        <label for="location">Location:</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          placeholder="City, Country"
+          required
+        />
+
+        <label for="batchNumber">Batch/Lot Number:</label>
+        <input type="text" id="batchNumber" name="batchNumber" />
+
+        <label for="expiryDate">Expiry Date (if applicable):</label>
+        <input type="date" id="expiryDate" name="expiryDate" />
+
+        <button type="submit">Add to Supply Chain</button>
+      </form>
+
+      <div id="status"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById('productForm')
+        .addEventListener('submit', function (e) {
+          e.preventDefault();
+
+          // Get form data
+          const formData = new FormData(this);
+          const productData = {};
+
+          for (let [key, value] of formData.entries()) {
+            productData[key] = value;
+          }
+
+          // Add timestamp and ID
+          productData.id = Date.now();
+          productData.timestamp = new Date().toISOString();
+          productData.addedBy = 'Current User'; // In real app, get from wallet
+
+          // Store in localStorage (in real app, this would go to blockchain)
+          const products = JSON.parse(
+            localStorage.getItem('supplyChainProducts') || '[]'
+          );
+          products.push(productData);
+          localStorage.setItem('supplyChainProducts', JSON.stringify(products));
+
+          // Show success message
+          const status = document.getElementById('status');
+          status.innerHTML =
+            '✅ Product/Service added to supply chain successfully!';
+          status.className = 'success';
+
+          // Reset form
+          this.reset();
+
+          // Redirect after 3 seconds
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 3000);
+        });
+    </script>
+  </body>
+</html>
