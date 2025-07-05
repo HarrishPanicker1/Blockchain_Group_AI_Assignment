@@ -34,6 +34,3 @@ A decentralized supply chain management application built on Ethereum, enabling 
    ```
 
 [![](https://visitcount.itsvg.in/api?id=imy1l&icon=0&color=0)](https://visitcount.itsvg.in)
-
-
-testing
