@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Halal Certificate</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="halal_cert.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register Halal Certificate</h2>
+
+    <form id="halalForm">
+      <label for="company">Company Name:</label>
+      <input type="text" id="company" name="company" required />
+
+      <label for="certBody">Certifying Body:</label>
+      <input type="text" id="certBody" required />
+
+      <label for="certID">Certificate Number:</label>
+      <input type="text" id="certID" required />
+
+      <label for="validUntil">Valid Until:</label>
+      <input type="date" id="validUntil" required />
+
+      <label for="notes">Additional Notes:</label>
+      <textarea id="notes"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="confirmation" style="text-align:center; color: green; font-weight: bold; font-size: 18px;"></p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("halalForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const cert = {
+          company: document.getElementById("company").value,
+          certBody: document.getElementById("certBody").value,
+          certID: document.getElementById("certID").value,
+          validUntil: document.getElementById("validUntil").value,
+          notes: document.getElementById("notes").value,
+          date: new Date().toLocaleDateString()
+        };
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4"
+        });
+
+        // Convert background image to Base64
+        const toBase64 = (url) =>
+          fetch(url)
+            .then((res) => res.blob())
+            .then(
+              (blob) =>
+                new Promise((resolve) => {
+                  const reader = new FileReader();
+                  reader.onloadend = () => resolve(reader.result);
+                  reader.readAsDataURL(blob);
+                })
+            );
+
+        const base64Image = await toBase64("  Halal certificate template.png"); // Place your template here
+
+        // Add image
+        doc.addImage(base64Image, "PNG", 0, 0, 210, 297); // A4 size
+
+        // Add certificate text
+        doc.setFont("Times New Roman", "bold");
+        doc.setFontSize(16);
+        doc.text(cert.company, 105, 85, { align: "center" });
+
+        doc.setFont("Times New Roman", "normal");
+        doc.setFontSize(12);
+        doc.text(cert.certBody, 105, 95, { align: "center" });
+
+        doc.text(`No. Sijil: ${cert.certID}`, 20, 245)  { align: "center" };
+        doc.text(`Sah sehingga: ${cert.validUntil}`, 20, 255)  { align: "center" };
+        doc.text(`Tarikh dikeluarkan: ${cert.date}`, 20, 265);
+5
+        // Save as blob and store
+        const pdfBlob = doc.output("blob");
+        const blobURL = URL.createObjectURL(pdfBlob);
+        cert.blobURL = blobURL;
+
+        const halalCerts = JSON.parse(localStorage.getItem("halalCerts")) || [];
+        halalCerts.push(cert);
+        localStorage.setItem("halalCerts", JSON.stringify(halalCerts));
+
+        document.getElementById("confirmation").innerText =
+          "✅ Halal certificate submitted successfully! Redirecting to homepage...";
+
+        setTimeout(() => {
+          window.location.href = "/frontend/index.html"; // Adjust this if path differs
+        }, 3000);
+      });
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Halal Certificate</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="halal_cert.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register Halal Certificate</h2>
+
+    <form id="halalForm">
+      <label for="company">Company Name:</label>
+      <input type="text" id="company" name="company" required />
+
+      <label for="certBody">Certifying Body:</label>
+      <input type="text" id="certBody" required />
+
+      <label for="certID">Certificate Number:</label>
+      <input type="text" id="certID" required />
+
+      <label for="validUntil">Valid Until:</label>
+      <input type="date" id="validUntil" required />
+
+      <label for="notes">Additional Notes:</label>
+      <textarea id="notes"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="confirmation" style="text-align:center; color: green; font-weight: bold; font-size: 18px;"></p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("halalForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const cert = {
+          company: document.getElementById("company").value,
+          certBody: document.getElementById("certBody").value,
+          certID: document.getElementById("certID").value,
+          validUntil: document.getElementById("validUntil").value,
+          notes: document.getElementById("notes").value,
+          date: new Date().toLocaleDateString()
+        };
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(14);
+        doc.text("Halal Certificate", 20, 20);
+        doc.text(`Company: ${cert.company}`, 20, 30);
+        doc.text(`Certifying Body: ${cert.certBody}`, 20, 40);
+        doc.text(`Certificate Number: ${cert.certID}`, 20, 50);
+        doc.text(`Valid Until: ${cert.validUntil}`, 20, 60);
+        doc.text("Notes:", 20, 70);
+        doc.text(cert.notes, 20, 80);
+
+        const pdfBlob = doc.output("blob");
+        const blobURL = URL.createObjectURL(pdfBlob);
+        cert.blobURL = blobURL;
+
+        const halalCerts = JSON.parse(localStorage.getItem("halalCerts")) || [];
+        halalCerts.push(cert);
+        localStorage.setItem("halalCerts", JSON.stringify(halalCerts));
+
+        document.getElementById("confirmation").innerText =
+          "✅ Halal certificate submitted successfully! Redirecting to homepage...";
+
+        setTimeout(() => {
+          window.location.href = "/frontend/index.html"; // adjust if needed
+        }, 3000);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Halal Certificate</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="halal_cert.css">
+
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register Halal Certificate</h2>
+
+    <form id="halalForm"></form>
+      <label for="company">Company Name:</label>
+      <input type="text" id="company" name="company" required />
+
+      <label for="certBody">Certifying Body:</label>
+      <input type="text" id="certBody" required />
+
+      <label for="certID">Certificate Number:</label>
+      <input type="text" id="certID" required />
+
+      <label for="validUntil">Valid Until:</label>
+      <input type="date" id="validUntil" required />
+
+      <label for="notes">Additional Notes:</label>
+      <textarea id="notes"></textarea>
+
+       <form id="halalForm">
+  <!-- form inputs -->
+       <button type="submit">Submit</button>
+</form>
+
+<p id="confirmation"></p>
+
+    </form>
+  </div>
+
+  <script src="halal_cert.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <p id="confirmation" style="text-align:center; color: green; font-weight: bold; font-size: 18px;"></p>
+</body>
+</html>
+
